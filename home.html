@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Haptik</title>
+  <link rel="stylesheet" type="text/css" href="home.css">
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+  <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.5.0/css/all.css' integrity='sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU' crossorigin='anonymous'>
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/4.0.2/bootstrap-material-design.css">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
+</head>
+<body>
+  <div id="center-text">
+    <img src="haptik.png" alt="Haptik" style="width: 220px; border-radius: 10px; -webkit-box-shadow: 4px 6px 8px 10px rgba(0,0,0,0.2); -moz-box-shadow: 4px 6px 8px 10px rgba(0,0,0,0.2); box-shadow: 4px 6px 8px 10px rgba(0,0,0,0.2);">
+    <h2 style="font-family: 'Word Sans', sans-serif; font-size: 128px;font-weight: bold;margin-top: 70px;">Haptik</h2>
+    <h2 style="color: #21abf3;">Welcome to the workd's largest conversational AI Platform</h2>
+  </div> 
+<div id="body"> 
+  
+<div id="chat-circle" class="btn btn-raised">
+        <div id="chat-overlay"></div>
+        <i class="material-icons">message</i>
+  </div>
+  
+  <div class="chat-box">
+    <div class="chat-box-header">
+      <div class=".chat-head-img">
+        <img src="haptik.png" alt="Haptik" class="img-head">
+      </div>
+      <div class=".chat-head-text">
+        <h1 class="text-head">Haptik </h1>
+      </div>
+      <div class="point"></div>
+      <div class="chat-head-icon chat-box-toggle">
+        <i class="far fa-times-circle" style="font-size: 22px;"></i>
+      </div>
+    </div>
+    <div class="chat-box-body">
+      <div class="chat-box-overlay">   
+        <h5 style="font-family: 'Word Sans', sans-serif; font-weight: normal; margin-bottom: 110px; float: right; margin-left: 200px; bottom: 0; position: fixed;"><span style="opacity: 0.6; font-size: 15px; ">Powered By</span> <span style="opacity: 0.9;"><img src="haptik.png" alt="Haptik" style="width: 30px;"></span> <span style="opacity: 0.6; color: #21abf3; font-weight: bold; font-size: 14px;">Haptik</span> </h5>
+      </div>
+      <div class="chat-logs">
+       
+      </div><!--chat-log -->
+    </div>
+
+
+    <div class="chat-box-bottom">
+      <div class="chat-box-bottom-icon">
+        <i class="fas fa-bars ico-bot" style=""></i>
+      </div>
+      <div class="chat-box-bottom-input">
+        <form>
+          <textarea name="chat" class="input-bottom but-send" placeholder="Type your message..." onclick="" id="chat-input"></textarea>
+        <button type="submit" class="chat-submit" id="chat-submit"><i class="material-icons ico-bot-send">send</i></button>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  
+  
+  
+</div>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
+
+<script type="text/javascript">
+  $(function() {
+  var INDEX = 0; 
+  var emojis = [0x1F600, 0x1F604, 0x1F34A, 0x1F344, 0x1F37F, 0x1F363, 0x1F370, 0x1F355, 0x1F354, 0x1F35F, 0x1F6C0, 0x1F48E, 0x1F5FA, 0x23F0, 0x1F579, 0x1F4DA, 0x1F431, 0x1F42A, 0x1F439, 0x1F424];
+  $("#chat-submit").click(function(e) {
+    e.preventDefault();
+    var msg = $("#chat-input").val(); 
+    if(msg.trim() == ''){
+      return false;
+    }
+    generate_message(msg, 'self');
+    var buttons = [
+        {
+          name: 'Existing User',
+          value: 'existing'
+        },
+        {
+          name: 'New User',
+          value: 'new'
+        }
+      ];
+    setTimeout(function() {      
+      generate_message(msg, 'user');  
+    }, 1000)
+    
+  })
+  
+  function generate_message(msg, type) {
+    INDEX++;
+    var str="";
+    str += "<div id='cm-msg"+INDEX+"' class=\"chat-msg "+type+"\">";
+    str += "        <\/span>";
+    str += "          <div class=\"cm-msg-text\">";
+    str += msg;
+    str += "          <\/div>";
+    str += "        <\/div>";
+    $(".chat-logs").append(str);
+    $("#cm-msg-"+INDEX).hide().fadeIn(300);
+    if(type == 'self'){
+     $("#chat-input").val(''); 
+    }    
+    $(".chat-logs").stop().animate({ scrollTop: $(".chat-logs")[0].scrollHeight}, 1000);    
+  }  
+  
+  function generate_button_message(msg, buttons){    
+    /* Buttons should be object array 
+      [
+        {
+          name: 'Existing User',
+          value: 'existing'
+        },
+        {
+          name: 'New User',
+          value: 'new'
+        }
+      ]
+    */
+    INDEX++;
+    var btn_obj = buttons.map(function(button) {
+       return  "              <li class=\"button\"><a href=\"javascript:;\" class=\"btn btn-primary chat-btn\" chat-value=\""+button.value+"\">"+button.name+"<\/a><\/li>";
+    }).join('');
+    var str="";
+    str += "<div id='cm-msg-"+INDEX+"' class=\"chat-msg user\">";
+    str += "        <\/span>";
+    str += "          <div class=\"cm-msg-text\">";
+    str += msg;
+    str += "          <\/div>";
+    str += "          <div class=\"cm-msg-button\">";
+    str += "            <ul>";   
+    str += btn_obj;
+    str += "            <\/ul>";
+    str += "          <\/div>";
+    str += "        <\/div>";
+    $(".chat-logs").append(str);
+    $("#cm-msg-"+INDEX).hide().fadeIn(300);   
+    $(".chat-logs").stop().animate({ scrollTop: $(".chat-logs")[0].scrollHeight}, 1000);
+    $("#chat-input").attr("disabled", true);
+  }
+  
+  $(document).delegate(".chat-btn", "click", function() {
+    var value = $(this).attr("chat-value");
+    var name = $(this).html();
+    $("#chat-input").attr("disabled", false);
+    generate_message(name, 'self');
+  })
+  
+  $("#chat-circle").click(function() {    
+    $("#chat-circle").toggle('scale');
+    $(".chat-box").toggle('scale');
+  })
+  
+  $(".chat-box-toggle").click(function() {
+    $("#chat-circle").toggle('scale');
+    $(".chat-box").toggle('scale');
+  })
+  
+})
+</script>
+</body>
+</html>
